@@ -1,0 +1,243 @@
+!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<title> login page</title>
+
+	<style type="text/css">
+h3
+{
+	text-align: center;
+}
+body
+{
+	margin-top: 200px;
+	color: black;
+	 background-color:#00FFFF;
+}
+	</style>
+
+
+</head>
+<body>
+
+
+
+
+<?php 
+if (isset($_POST['submit'])) {
+
+	$user_name=$_POST['user_name'];
+	$user_password=$_POST['user_password'];
+
+	$dhost='localhost';
+	$dname='root';
+	$dbpassword ='';
+	
+	$con = mysql_connect($dhost,$dname,$dbpassword);
+	
+	if (!$con) {
+
+		die('could not connect'. mysql_errno());
+	}
+	//echo "connected succesfully ";
+	
+	 $db = mysql_select_db('hari');
+	  //die(mysql_error());
+	  
+	  $sel_qry = mysql_query("SELECT * FROM user WHERE email='{$user_name}' AND password='{$user_password}'");
+	  
+	  $row_det = mysql_fetch_row($sel_qry);
+	  
+	 // echo "<pre>";print_r($row_det);exit;
+	 
+	   //mysql_close($con);
+}
+ ?>
+ <html>
+ <style>
+ 
+ body
+ {
+ 
+ background-image:url("h.jpg");
+ }
+ .a {
+ line-height:3;
+ margin:0px auto;
+ text-align:center;
+ color:white;
+
+ 
+ }
+ 
+ </style>
+ <body>
+ <div class="a">
+ <div >
+ id :<?php echo $row_det[0];?></div>
+
+<div> username : <?php echo $row_det[1];?></div>
+ <div> Email : <?php echo $row_det[2];?></div>
+ <div> Password: <?php echo $row_det[3];?></div>
+ <div> mobile: <?php echo $row_det[4];?></div>
+ <div> gender: <?php echo $row_det[5];?></div>
+ 
+<div> 
+<img src="images/<?php echo $row_det['6'];?>" width="200" height="100" /></div>
+</div>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html>
+<head><!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<title></title>
+	<style type="text/css">
+	body
+	{
+		//background-color:#008B8B	 ;
+		//color:white;
+	}
+	.suc_msg{
+	    position: absolute;
+		top: 131px;
+		left: 34px;
+		color:#00ff00;
+	}
+
+
+h3{text-align: center;
+text-decoration: blink;}
+	</style>
+
+</head>
+<body>
+<?php 
+
+if(isset($_POST['sub']))
+{
+	 $username = $_POST['username'];
+     $mail = $_POST['mail'];
+     $pasword =$_POST['password'];
+     $num=$_POST['num'];
+     
+	$gen = $_POST['gender'];
+	
+	$image_name =$_FILES['images']['name'];
+	$image_type =$_FILES['images']['type'];
+	$image_size =$_FILES['images']['size'];
+	$image_tmp_name =$_FILES['images']['tmp_name'];
+	 if($image_name=='')
+	 {
+		echo "<script>alert ('please select the image')</script>";
+	 }
+	 else{
+		move_uploaded_file($image_tmp_name,"images/$image_name");
+	  echo "<div class = 'suc_msg'>image upload success fully</div>";
+			 }
+//exit;
+    // echo  " username :$username";
+	 // echo "<br>";
+	// echo " Mailid :$mail";
+	 // echo "<br>";	
+	// echo " Password :$pasword";
+	 // echo "<br>";
+	// echo " phone number:$num";
+	
+   $dbhost = 'localhost';
+   $dbuser = 'root';
+   $dbpass = '';
+   $conn = mysql_connect($dbhost, $dbuser, $dbpass);
+   if(! $conn )
+   {
+     die('Could not connect: ' . mysql_error());
+   }
+   echo 'Connected successfully';
+   
+   $db = mysql_select_db('hari');
+   
+   $query = mysql_query("INSERT INTO user(name,email,password,mobile,gender,images)values('{$username}','{$mail}','{$pasword}','{$num}','{$gen}','{$image_name}')");
+   if(!$query)
+   die(mysql_error());
+  
+   mysql_close($conn);
+	
+}
+?>
+
+
+<h3 >Sign Up</h3> 
+
+<div class="container">
+
+<form  action="first.php" method="POST" enctype="multipart/form-data" class="form-horizontal" >
+<input type="file" name="images"><br>
+  <div class="form-group">
+    <label for="input" class="col-sm-5 control-label">User Name :</label>
+    <div class="col-sm-4">
+      <input type="text" name = "username" class="form-control"  placeholder="User name">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputEmail3" class="col-sm-5 control-label">Email  :</label>
+    <div class="col-sm-4">
+      <input type="email" name="mail" class="form-control" id="inputEmail3" placeholder="Email">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="pass word" class="col-sm-5 control-label">Password :</label>
+    <div class="col-sm-4">
+      <input type="password"  name="password" class="form-control" id="pass word" placeholder="Password">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="mobile nuber" class="col-sm-5 control-label">Mobile Number :</label>
+    <div class="col-sm-4">
+      <input type="values" name="num" class="form-control"  placeholder="Mobile Number">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-5 col-sm-7">
+      <div class="radio-inline">
+        <label>
+          <input type="radio"  name="gender" value="male"> male &nbsp	 &nbsp&nbsp &nbsp 
+           <input type="radio" name="gender" value="female"> female
+        </label>
+      </div>
+    </div>
+    <div class="col-sm-offset-5 col-sm-7">
+      <div class="radio-inline">
+        <label>
+         
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-5 col-sm-10">
+      <button type="submit" class="btn btn-default" name="sub">Sign in</button>
+
+      <button type="submit" class="btn btn-default">Cancel</button>
+    </div>
+
+</form>
+</div>
+
+
+</body>
+</html>
